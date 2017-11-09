@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':common-auditing')
+    compile libraries.jersey
+    compile libraries.jwt
+    compile libraries.swagger
+
+    testCompile libraries.junit
+}

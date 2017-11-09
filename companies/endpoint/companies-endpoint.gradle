@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':common-auditing')
+    compile project(':common-jersey')
+    compile project(':companies-database')
+}
