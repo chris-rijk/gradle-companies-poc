@@ -1,4 +1,4 @@
-package poc.companies.database.external.dto;
+package poc.companies.common.dto;
 
 public class CompanySearchMap {
 

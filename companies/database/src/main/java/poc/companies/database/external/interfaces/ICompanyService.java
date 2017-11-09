@@ -1,9 +1,9 @@
 package poc.companies.database.external.interfaces;
 
-import poc.companies.database.external.dto.CompanyMap;
-import poc.companies.database.external.dto.CompanyMapBase;
-import poc.companies.database.external.dto.CompanySearchMap;
-import poc.companies.database.external.dto.PagedListMap;
+import poc.companies.common.dto.CompanyMap;
+import poc.companies.common.dto.CompanyMapBase;
+import poc.companies.common.dto.CompanySearchMap;
+import poc.companies.common.dto.PagedListMap;
 import poc.companies.database.external.exceptions.CompanyNotFoundException;
 
 public interface ICompanyService {

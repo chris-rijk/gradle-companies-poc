@@ -1,7 +1,8 @@
-package poc.companies.database.external.dto;
+package poc.companies.common.dto;
+
 import java.time.Instant;
 import java.util.Objects;
-import poc.companies.database.external.enums.CompanyStatusType;
+import poc.companies.common.enums.CompanyStatusType;
 
 public class CompanyMap extends CompanyMapBase {
 

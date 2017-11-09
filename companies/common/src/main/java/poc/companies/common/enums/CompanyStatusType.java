@@ -1,4 +1,4 @@
-package poc.companies.database.external.enums;
+package poc.companies.common.enums;
 
 public enum CompanyStatusType {
     Enabled(1),

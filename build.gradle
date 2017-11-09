@@ -80,6 +80,14 @@ subprojects {
             }
         }
     }
+    
+    task datanucleusEnhance(type: JavaExec, group: 'Build', dependsOn: processResources) {
+        classpath = project.configurations.compileClasspath + files("$buildDir/classes/java/main")
+        main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
+        args = fileTree("$buildDir/classes/java/main").matching {
+            include '**/*.class'
+        }
+    }
 }
 
 task jacocoRootReport(type: JacocoReport) {
@@ -98,7 +106,7 @@ task jacocoRootReport(type: JacocoReport) {
     }
     doFirst {
         executionData = files(executionData.findAll {
-            it.exists()
-        })
+                it.exists()
+            })
     }
 }

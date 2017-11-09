@@ -1,5 +1,8 @@
 dependencies {
+    compile project(':companies-common')
     compile libraries.jdo
 
     testCompile libraries.junit
 }
+
+classes.dependsOn(datanucleusEnhance)

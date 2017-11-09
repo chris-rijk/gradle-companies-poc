@@ -2,8 +2,8 @@ package poc.companies.endpoint.json;
 
 import java.util.ArrayList;
 import java.util.List;
-import poc.companies.database.external.dto.CompanyMap;
-import poc.companies.database.external.dto.PagedListMap;
+import poc.companies.common.dto.CompanyMap;
+import poc.companies.common.dto.PagedListMap;
 
 /**
  *

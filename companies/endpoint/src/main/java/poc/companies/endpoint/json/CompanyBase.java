@@ -1,8 +1,8 @@
 package poc.companies.endpoint.json;
 
 import io.swagger.annotations.ApiModelProperty;
-import poc.companies.database.external.dto.CompanyMapBase;
-import poc.companies.database.external.enums.CompanyStatusType;
+import poc.companies.common.dto.CompanyMapBase;
+import poc.companies.common.enums.CompanyStatusType;
 
 /**
  *

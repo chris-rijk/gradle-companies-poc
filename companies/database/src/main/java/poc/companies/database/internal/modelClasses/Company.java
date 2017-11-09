@@ -11,9 +11,9 @@ import javax.jdo.annotations.Key;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import poc.companies.database.external.dto.CompanyMap;
-import poc.companies.database.external.dto.CompanyMapBase;
-import poc.companies.database.external.enums.CompanyStatusType;
+import poc.companies.common.dto.CompanyMap;
+import poc.companies.common.dto.CompanyMapBase;
+import poc.companies.common.enums.CompanyStatusType;
 import poc.companies.database.internal.enums.CompaniesOptionalDataType;
 
 @PersistenceCapable(table = "Companies")

@@ -3,7 +3,7 @@ package poc.companies.endpoint.json;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Instant;
-import poc.companies.database.external.dto.CompanyMap;
+import poc.companies.common.dto.CompanyMap;
 
 @ApiModel
 public class Company extends CompanyBase {
