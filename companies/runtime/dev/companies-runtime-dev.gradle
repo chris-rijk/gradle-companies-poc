@@ -1,3 +1,7 @@
 dependencies {
     compile project(':companies-endpoint')
 }
+
+apply plugin: 'application'
+
+mainClassName = 'poc.companies.runtime.Bootstrap'

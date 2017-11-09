@@ -28,15 +28,15 @@ ext.libraries = [
     swagger: "io.swagger:swagger-jersey2-jaxrs:1.5.16",
     jersey: [
         "org.glassfish.jersey.containers:jersey-container-grizzly2-http:${versions.jersey}",
-        "org.glassfish.jersey.ext:jersey-proxy-client:${versions.jersey}",
         "org.glassfish.jersey.inject:jersey-hk2:${versions.jersey}",
-        "org.glassfish.jersey.containers:jersey-container-grizzly2-servlet:${versions.jersey}",
+        "org.glassfish.jersey.containers:jersey-container-grizzly2-servlet:${versions.jersey}", // required at runtime for swagger
         "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${versions.jackson}",
         "com.fasterxml.jackson.module:jackson-module-parameter-names:${versions.jackson}",
         "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${versions.jackson}",
         "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${versions.jackson}",
     ],
     jersey_test: [
+        "org.glassfish.jersey.ext:jersey-proxy-client:${versions.jersey}",
         "org.glassfish.jersey.test-framework:jersey-test-framework-util:${versions.jersey}",
         "org.glassfish.jersey.test-framework:jersey-test-framework-core:${versions.jersey}",
         "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:${versions.jersey}"
