@@ -1,9 +1,10 @@
-package poc.companies.endpoint.lifecycle;
+package poc.companies.runtime;
 
 import java.io.IOException;
 import poc.common.jersey.lifecycle.StartHttpServer;
 import poc.common.jersey.lifecycle.StartServiceInstance;
 import poc.common.jersey.lifecycle.SystemConfiguration;
+import poc.companies.endpoint.lifecycle.AppConfig;
 
 public class Bootstrap {
 
