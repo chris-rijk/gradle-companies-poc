@@ -28,7 +28,7 @@ public class AppConfig extends JerseyConfig {
     }
 
     private void ConfigureSwagger() {
-        String resources = "jersey.companies.resources";
+        String resources = CompanyController.class.getPackage().getName();
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[]{"http"});
