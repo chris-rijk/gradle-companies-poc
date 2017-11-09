@@ -4,7 +4,7 @@ import poc.companies.common.dto.CompanyMap;
 import poc.companies.common.dto.CompanyMapBase;
 import poc.companies.common.dto.CompanySearchMap;
 import poc.companies.common.dto.PagedListMap;
-import poc.companies.database.external.exceptions.CompanyNotFoundException;
+import poc.companies.common.exceptions.CompanyNotFoundException;
 
 public interface ICompanyService {
     CompanyMap CreateCompany(CompanyMapBase company);

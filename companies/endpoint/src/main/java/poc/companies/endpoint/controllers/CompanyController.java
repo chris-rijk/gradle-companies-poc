@@ -11,7 +11,7 @@ import poc.common.jersey.lifecycle.RequestAuditing;
 import poc.companies.common.dto.CompanyMap;
 import poc.companies.common.dto.CompanySearchMap;
 import poc.companies.common.dto.PagedListMap;
-import poc.companies.database.external.exceptions.CompanyNotFoundException;
+import poc.companies.common.exceptions.CompanyNotFoundException;
 import poc.companies.database.external.interfaces.ICompanyService;
 import poc.companies.endpoint.json.Company;
 import poc.companies.endpoint.json.CompanyBase;

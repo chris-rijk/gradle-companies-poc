@@ -13,7 +13,7 @@ import poc.companies.common.dto.CompanyMapBase;
 import poc.companies.common.dto.CompanySearchMap;
 import poc.companies.common.dto.PagedListMap;
 import poc.companies.common.enums.CompanyStatusType;
-import poc.companies.database.external.exceptions.CompanyNotFoundException;
+import poc.companies.common.exceptions.CompanyNotFoundException;
 import poc.companies.database.internal.database.CompanyService;
 
 /**

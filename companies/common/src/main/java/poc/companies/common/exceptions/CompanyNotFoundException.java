@@ -1,4 +1,4 @@
-package poc.companies.database.external.exceptions;
+package poc.companies.common.exceptions;
 
 public class CompanyNotFoundException extends Exception {
 
