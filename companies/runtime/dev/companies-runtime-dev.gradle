@@ -5,3 +5,10 @@ dependencies {
 apply plugin: 'application'
 
 mainClassName = 'poc.companies.runtime.Bootstrap'
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}

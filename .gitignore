@@ -5,3 +5,6 @@
 /webservices/authentication/service/build/
 /companies/endpoint/build/
 /companies/runtime/dev/build/
+/.nb-gradle/
+/build/
+/companies/common/build/
