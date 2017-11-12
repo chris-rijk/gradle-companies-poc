@@ -8,3 +8,6 @@
 /.nb-gradle/
 /build/
 /companies/common/build/
+/common/auditing/build/
+/common/jersey/build/
+/companies/database/build/
