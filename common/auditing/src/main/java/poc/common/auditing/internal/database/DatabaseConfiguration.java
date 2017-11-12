@@ -17,6 +17,7 @@ public class DatabaseConfiguration {
         properties.put("datanucleus.schema.autoCreateAll", "false");
         properties.put("datanucleus.identifier.case", "MixedCase");
         properties.put("datanucleus.rdbms.allowColumnReuse", "true");
+        properties.put("javax.jdo.PersistenceManagerFactoryClass", "org.datanucleus.api.jdo.JDOPersistenceManagerFactory");
 
         PMF = JDOHelper.getPersistenceManagerFactory(properties);
     }
