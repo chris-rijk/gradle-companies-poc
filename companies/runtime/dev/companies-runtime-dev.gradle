@@ -7,6 +7,9 @@ apply plugin: 'application'
 mainClassName = 'poc.companies.runtime.Bootstrap'
 
 jar {
+    exclude('META-INF/*.SF')
+    exclude('META-INF/*.DSA')
+    exclude('META-INF/*.RSA')
     manifest {
         attributes 'Main-Class': mainClassName
     }
