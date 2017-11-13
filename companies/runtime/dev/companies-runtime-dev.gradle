@@ -13,12 +13,11 @@ jar {
             "Class-Path": configurations.runtime.collect { it.getName() }.join(' ')
         )
     }
-    doLast {
-        copyDeps
-    }
 }
 
 task copyDeps(type: Copy) {
     from configurations.runtime
     into 'build/libs'
 }
+
+jar.dependsOn copyDeps
