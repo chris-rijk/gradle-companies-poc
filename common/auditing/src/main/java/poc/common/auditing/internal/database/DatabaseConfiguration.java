@@ -11,7 +11,7 @@ public class DatabaseConfiguration {
     static {
         HashMap<String, String> properties = new HashMap<>();
         properties.put("datanucleus.ConnectionDriverName", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        properties.put("datanucleus.ConnectionURL", "jdbc:sqlserver://localhost;DatabaseName=CompaniesService;SelectMethod=cursor");
+        properties.put("datanucleus.ConnectionURL", "jdbc:sqlserver://4G66RF2.ceb.com;DatabaseName=CompaniesService;SelectMethod=cursor");
         properties.put("datanucleus.ConnectionUserName", "jdoUser");
         properties.put("datanucleus.ConnectionPassword", "jdoPassword");
         properties.put("datanucleus.schema.autoCreateAll", "false");

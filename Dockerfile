@@ -11,6 +11,6 @@ RUN gradle --no-daemon --info --stacktrace :companies-runtime-dev:jar
 
 FROM openjdk:8-jre-alpine
 WORKDIR /root/
-COPY --from=BUILD_IMAGE /home/gradle/project/gradle-companies-poc/companies/runtime/dev/build/libs/companies-runtime-dev-1.0.jar .
+COPY --from=BUILD_IMAGE /home/gradle/project/gradle-companies-poc/companies/runtime/dev/build/libs/*.jar ./
 EXPOSE 18080
 CMD ["java","-jar","companies-runtime-dev-1.0.jar"]
