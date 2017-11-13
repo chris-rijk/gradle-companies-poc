@@ -3,13 +3,14 @@ dependencies {
 }
 
 apply plugin: 'application'
+mainClassName = 'poc.companies.runtime.Bootstrap'
 
 jar {
     manifest {
         attributes(
             "Manifest-Version": "1.0",
             'Main-Class': 'poc.companies.runtime.Bootstrap',
-            "Class-Path": configurations.compile.collect { it.getName() }.join(' ')
+            "Class-Path": configurations.runtime.collect { it.getName() }.join(' ')
         )
     }
     doLast {
