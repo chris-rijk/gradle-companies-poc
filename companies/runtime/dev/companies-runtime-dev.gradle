@@ -12,13 +12,12 @@ jar {
             "Class-Path": configurations.compile.collect { it.getName() }.join(' ')
         )
     }
+    doLast {
+        copyDeps
+    }
 }
 
 task copyDeps(type: Copy) {
-    // def dirName = "build/libs"
-    // file(dirName).mkdirs()
     from configurations.runtime
     into 'build/libs'
 }
-
-jar.dependsOn copyDeps

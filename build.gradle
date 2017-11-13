@@ -84,9 +84,7 @@ subprojects {
     task datanucleusEnhance(type: JavaExec, group: 'Build', dependsOn: processResources) {
         classpath = project.configurations.compileClasspath + files("$buildDir/classes/java/main")
         main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
-        args = fileTree("$buildDir/classes/java/main").matching {
-            include '**/*.class'
-        }
+        args = fileTree(dir: "$buildDir/classes/java/main", include: '**/*.class')
     }
 }
 
