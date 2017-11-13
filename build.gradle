@@ -81,19 +81,14 @@ subprojects {
         }
     }
     
+    def datanucleusEnhancePath = "$buildDir/classes/java/main";
+    def datanucleusEnhanceArgs = fileTree(dir: datanucleusEnhancePath, include: '**/*.class').getFiles();
     task datanucleusEnhance(type: JavaExec, group: 'Build', dependsOn: processResources) {
-        classpath = project.configurations.compileClasspath + files("$buildDir/classes/java/main")
+        classpath = project.configurations.compileClasspath + files(datanucleusEnhancePath)
         main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
-        args = fileTree(dir: "$buildDir/classes/java/main", include: '**/*.class')
+        args datanucleusEnhanceArgs
         doLast {
-            String path = "$buildDir/classes/java/main"
-            def entityFiles = fileTree(dir: path, include: '**/*.class')
-            
-            println "Enhancing with DataNucleus the following files in '$path'"
-            entityFiles.getFiles().each {
-                println it
-            }
-            println "list complete."
+            println "Enhanced '$datanucleusEnhancePath' : $datanucleusEnhanceArgs"
         }
     }
 }
