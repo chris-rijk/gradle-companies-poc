@@ -81,16 +81,18 @@ subprojects {
         }
     }
     
-    def datanucleusEnhancePath = "$buildDir/classes/java/main";
-    def datanucleusEnhanceArgs = fileTree(dir: datanucleusEnhancePath, include: '**/*.class').getFiles();
-    task datanucleusEnhance(type: JavaExec, group: 'Build', dependsOn: processResources) {
-        classpath = project.configurations.compileClasspath + files(datanucleusEnhancePath)
-        main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
-        args datanucleusEnhanceArgs
-        doLast {
-            println "Enhanced '$datanucleusEnhancePath' : $datanucleusEnhanceArgs"
+    task prepDatanucleusEnhance {
+        doFirst {
+            String datanucleusEnhancePath = "$buildDir/classes/java/main"
+            def datanucleusEnhanceArgs = fileTree(dir: datanucleusEnhancePath, include: '**/*.class').getFiles();
+            // println "Enhancing '$datanucleusEnhancePath' : $datanucleusEnhanceArgs";
+            tasks.datanucleusEnhance.classpath(project.configurations.compileClasspath + files(datanucleusEnhancePath))
+            tasks.datanucleusEnhance.args(datanucleusEnhanceArgs)
         }
     }
+    task datanucleusEnhance(type: JavaExec, group: 'Build', dependsOn: 'prepDatanucleusEnhance') {
+        main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
+    }            
 }
 
 task jacocoRootReport(type: JacocoReport) {
