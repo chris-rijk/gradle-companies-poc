@@ -2,4 +2,7 @@ dependencies {
     compile project(':common-auditing')
     compile project(':common-jersey')
     compile project(':companies-database')
+    
+    testCompile libraries.mockito
+    testCompile libraries.jersey_test
 }

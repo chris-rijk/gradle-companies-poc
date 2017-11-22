@@ -51,15 +51,17 @@ public class AuditInstancesServiceTest {
      * Test of CreateCompany method, of class CompanyService.
      */
     @Test
-    public void testCreateAuditInstancesService() {
+    public void testCreateAuditInstancesService() throws AuditNotFoundException {
         System.out.println("testCreateAuditInstancesService");
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
 
         Instant before = Instant.now();
-        AuditServiceInstancesMap result = instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
         Instant after = Instant.now();
 
+        AuditServiceInstancesMap result = auditService.GetInstancesAudit(instancesService.GetAuditId());       
+        
         assertTrue(result.getAuditId() > 0);
         TestUtils.assertInRange(before, result.getCreateDateTime(), after);
         assertEquals("ip address", result.getIpAddress());
@@ -79,8 +81,8 @@ public class AuditInstancesServiceTest {
         System.out.println("CreateCompany");
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
-        AuditServiceInstancesMap result = instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
-        long instanceId = result.getAuditId();
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
+        long instanceId = instancesService.GetAuditId();
 
         Map<String, String> results = auditService.GetAuditNameValuePairs(instanceId, NameValuePairType.HttpRequestHeaders);
         assertTrue(results.isEmpty());
@@ -104,8 +106,8 @@ public class AuditInstancesServiceTest {
         System.out.println("CreateCompany");
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
-        AuditServiceInstancesMap result = instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
-        long instanceId = result.getAuditId();
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
+        long instanceId = instancesService.GetAuditId();
 
         instancesService.AuditDiagnostics(new DiagnosticAuditMapBase(DiagnosticType.Startup, "test1"));
         instancesService.AuditDiagnostics(new DiagnosticAuditMapBase(DiagnosticType.Authorisation, "test2"));

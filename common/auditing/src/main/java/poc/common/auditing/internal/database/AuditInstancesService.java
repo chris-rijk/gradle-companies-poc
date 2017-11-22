@@ -1,7 +1,6 @@
 package poc.common.auditing.internal.database;
 
 import javax.jdo.PersistenceManager;
-import poc.common.auditing.external.dto.AuditServiceInstancesMap;
 import poc.common.auditing.external.dto.AuditServiceInstancesMapBase;
 import poc.common.auditing.external.enums.AuditType;
 import poc.common.auditing.external.interfaces.IAuditHttpRequestsService;
@@ -16,15 +15,11 @@ public class AuditInstancesService extends AuditHandlerCommon implements IAuditI
     }
 
     @Override
-    public AuditServiceInstancesMap StartInstancesAudit(AuditServiceInstancesMapBase serviceInstance) {
-        AuditServiceInstancesMap ret;
+    public void StartInstancesAudit(AuditServiceInstancesMapBase serviceInstance) {
         try (PersistenceManager pm = DatabaseConfiguration.getPersistenceManager()) {
             AuditServiceInstance asi = new AuditServiceInstance(auditId, serviceInstance);
             pm.makePersistent(asi);
-            ret = asi.toAuditServiceInstancesMap(audit);
         }
-
-        return ret;
     }
 
     @Override

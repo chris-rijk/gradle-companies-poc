@@ -7,6 +7,7 @@ import java.io.InputStream;
 import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 import org.glassfish.jersey.message.internal.ReaderWriter;
@@ -17,6 +18,7 @@ import poc.common.jersey.lifecycle.RequestAuditing;
 import poc.common.jersey.utils.MultimapToMap;
 
 @Provider
+@PreMatching
 @Priority(0)
 public class RequestAuditingFilter implements ContainerRequestFilter {
 

@@ -3,9 +3,11 @@ package poc.common.jersey.lifecycle;
 import java.time.Instant;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import poc.common.auditing.external.dto.AuditServiceInstancesMapBase;
 import poc.common.auditing.external.dto.DiagnosticAuditMapBase;
 import poc.common.auditing.external.enums.DiagnosticType;
 import poc.common.auditing.external.interfaces.IAuditInstancesService;
+import poc.common.auditing.external.interfaces.IAuditService;
 import poc.common.jersey.filters.CustomMessageBodyWriter;
 import poc.common.jersey.filters.ExceptionMappingThrowable;
 import poc.common.jersey.filters.RequestAuditingFilter;
@@ -13,8 +15,21 @@ import poc.common.jersey.filters.RequestResponseAuditingFilter;
 
 public class JerseyConfig extends ResourceConfig {
 
+    private final IAuditService auditService;
     private IAuditInstancesService instancesService;
 
+    protected JerseyConfig(IAuditService auditService) {
+        this.auditService = auditService;
+    }
+    
+    protected void StartAuditing(SystemConfiguration system) {
+        instancesService = auditService.CreateInstancesAudit();
+        String url = system.getBindURI().toString();
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase(url, "docker"));
+
+        AuditDiagnostics(DiagnosticType.Startup, "Starting instance " + instancesService.GetAuditId() + " on " + url);
+    }
+    
     final protected void RegisterDefault() {
         RegisterSerializer();
         RegisterRequestAuditingFilter();
@@ -40,10 +55,6 @@ public class JerseyConfig extends ResourceConfig {
     protected void RegisterSwagger() {
         register(io.swagger.jaxrs.listing.ApiListingResource.class);
         register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
-    }
-
-    void setServiceInstance(IAuditInstancesService instancesService) {
-        this.instancesService = instancesService;
     }
 
     private void RegisterInstancesService() {

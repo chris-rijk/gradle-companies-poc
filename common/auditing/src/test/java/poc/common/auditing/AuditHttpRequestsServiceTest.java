@@ -11,7 +11,6 @@ import poc.common.auditing.external.dto.AuditHttpRequestMap;
 import poc.common.auditing.external.dto.AuditHttpRequestsMapBase;
 import poc.common.auditing.external.dto.AuditHttpResponseMap;
 import poc.common.auditing.external.dto.AuditHttpResponseMapBase;
-import poc.common.auditing.external.dto.AuditServiceInstancesMap;
 import poc.common.auditing.external.dto.AuditServiceInstancesMapBase;
 import poc.common.auditing.external.enums.HttpRequestSourceType;
 import poc.common.auditing.external.enums.HttpRequestType;
@@ -58,8 +57,7 @@ public class AuditHttpRequestsServiceTest {
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
         IAuditHttpRequestsService requestsService = instancesService.CreateHttpRequest();
 
-        AuditServiceInstancesMap serviceInstance = instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
-        assertNotNull(serviceInstance);
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
 
         Instant before = Instant.now();
         AuditHttpRequestMap httpRequest = requestsService.StartHttpRequest(new AuditHttpRequestsMapBase("url", "body", HttpRequestType.Unknown, HttpRequestSourceType.Test));

@@ -1,16 +1,16 @@
 package poc.common.jersey.lifecycle;
 
-import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.Optional;
+import javax.ws.rs.core.UriBuilder;
 
 public class SystemConfiguration {
+
     public String getHostname() {
         return Optional.ofNullable(System.getenv("HOSTNAME")).orElse("localhost");
     }
 
-    public String getPort()
-    {
+    public String getPort() {
         return Optional.ofNullable(System.getenv("PORT")).orElse("18080");
     }
 

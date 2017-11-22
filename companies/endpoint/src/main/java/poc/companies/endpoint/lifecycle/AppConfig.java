@@ -3,18 +3,26 @@ package poc.companies.endpoint.lifecycle;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.models.Info;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import poc.common.auditing.external.interfaces.IAuditService;
 import poc.common.jersey.lifecycle.JerseyConfig;
+import poc.common.jersey.lifecycle.SystemConfiguration;
 import poc.companies.database.external.interfaces.ICompanyService;
-import poc.companies.database.internal.database.CompanyService;
 import poc.companies.endpoint.controllers.CompanyController;
 import poc.companies.endpoint.controllers.ICompanyController;
 import poc.companies.endpoint.security.SecurityFilterCompanyRead;
 import poc.companies.endpoint.security.SecurityFilterCompanyWrite;
 
 public class AppConfig extends JerseyConfig {
+    private final ICompanyService companyService;
 
-    public void Setup() {
-        this.RegisterDefault();
+    public AppConfig(IAuditService auditService, ICompanyService companyService) {
+        super(auditService);
+        this.companyService = companyService;
+    }
+    
+    public void Setup(SystemConfiguration system) {
+        StartAuditing(system);
+        RegisterDefault();
 
         ConfigureSwagger();
         
@@ -53,7 +61,7 @@ public class AppConfig extends JerseyConfig {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(new CompanyService()).to(ICompanyService.class);
+                bind(companyService).to(ICompanyService.class);
             }
         });
     }
