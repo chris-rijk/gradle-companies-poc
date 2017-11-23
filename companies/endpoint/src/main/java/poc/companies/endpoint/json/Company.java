@@ -12,8 +12,6 @@ public class Company extends CompanyBase {
     private long id;
     @ApiModelProperty(required = true, value = "Creation date", dataType = "dateTime")
     private Instant createDate;
-    @ApiModelProperty(required = true, value = "Last modified date", dataType = "dateTime")
-    private Instant lastModified;
 
     private Company() {
     }
@@ -22,7 +20,6 @@ public class Company extends CompanyBase {
         super(map.getName(), map.getPlatform());
         this.id = map.getId();
         this.createDate = map.getCreateDateTime();
-        this.lastModified = Instant.now();
     }
 
     public long getId() {
@@ -32,9 +29,4 @@ public class Company extends CompanyBase {
     public Instant getCreateDate() {
         return createDate;
     }
-
-    public Instant getLastModified() {
-        return lastModified;
-    }
-
 }

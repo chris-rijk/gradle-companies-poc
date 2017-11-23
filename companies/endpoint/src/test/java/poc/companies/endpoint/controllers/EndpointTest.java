@@ -9,8 +9,8 @@ import org.mockito.Mockito;
  *
  * @author crijk
  */
-public class CompanyControllerTest extends TestBase {
-    
+public class EndpointTest extends TestBase {
+
     @Test
     public void testHomePage() {
         Response response = target().path("/").request().get();
@@ -18,13 +18,6 @@ public class CompanyControllerTest extends TestBase {
         verify();
     }
 
-    @Test
-    public void testCompanies() {
-        Response response = target().path("/companies/1").request().get();
-        assertEquals(401, response.getStatus());
-        verify();
-    }
-    
     private void verify() {
         Mockito.verify(auditInstancesMock, Mockito.times(1)).CreateHttpRequest();
         Mockito.verify(requestServiceMock, Mockito.times(1)).StartHttpRequest(Mockito.any());

@@ -1,4 +1,4 @@
-package poc.common.jersey;
+package poc.companies.endpoint.controllers;
 
 import java.util.Date;
 import static org.junit.Assert.assertEquals;

@@ -39,6 +39,10 @@ public class CompanyController implements ICompanyController {
         } catch (CompanyNotFoundException ex) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
+        if (c == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        
         Company response = new Company(c);
         ra.markResponseWithJson(Status.OK, HttpResponseType.Success, response);
         return response;
