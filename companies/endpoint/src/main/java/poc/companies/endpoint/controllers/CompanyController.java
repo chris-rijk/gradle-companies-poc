@@ -81,6 +81,10 @@ public class CompanyController implements ICompanyController {
         ra.StartHttpRequest(HttpRequestType.CompanySearch);
         PagedListMap<CompanyMap> list = companyService.SearchCompanies(new CompanySearchMap(name, isEnabled, subscriptionId, skip, take));
 
+        if (list == null) {
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+        
         PagedCompanies response = new PagedCompanies(list);
         ra.markResponseWithJson(Status.OK, HttpResponseType.Success, response);
         return response;

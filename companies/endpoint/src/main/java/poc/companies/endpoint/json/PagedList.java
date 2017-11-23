@@ -13,7 +13,7 @@ public class PagedList<T> {
         this.total = list.size();
     }
 
-    public PagedList(List<T> page, int total, int skip, int take) {
+    public PagedList(List<T> page, Integer total, Integer skip, Integer take) {
         this.list = page;
         this.total = total;
         this.skip = skip;
