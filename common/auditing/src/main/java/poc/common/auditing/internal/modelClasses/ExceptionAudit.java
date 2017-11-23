@@ -12,7 +12,7 @@ import poc.common.auditing.external.dto.ExceptionAuditMap;
 import poc.common.auditing.external.dto.ExceptionAuditMapBase;
 import poc.common.auditing.external.enums.ExceptionType;
 
-@PersistenceCapable(table = "AuditsException")
+@PersistenceCapable(table = "AuditsExceptions")
 public class ExceptionAudit {
 
     @PrimaryKey

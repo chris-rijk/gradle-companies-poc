@@ -17,7 +17,7 @@ public class CompanyBase {
     @ApiModelProperty(required = false, value = "If true then this company is disabled and cannot be used")
     private boolean disabled;
 
-    public CompanyBase() {
+    protected CompanyBase() {
     }
 
     public CompanyBase(String name, String platform) {

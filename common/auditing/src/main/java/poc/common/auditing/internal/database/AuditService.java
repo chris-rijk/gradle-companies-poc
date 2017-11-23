@@ -10,6 +10,7 @@ import javax.jdo.Query;
 import poc.common.auditing.external.dto.AuditHttpRequestMap;
 import poc.common.auditing.external.dto.AuditServiceInstancesMap;
 import poc.common.auditing.external.dto.DiagnosticAuditMap;
+import poc.common.auditing.external.dto.ExceptionAuditMap;
 import poc.common.auditing.external.enums.AuditType;
 import poc.common.auditing.external.enums.NameValuePairType;
 import poc.common.auditing.external.interfaces.IAuditInstancesService;
@@ -19,6 +20,7 @@ import poc.common.auditing.internal.modelClasses.AuditHttpRequest;
 import poc.common.auditing.internal.modelClasses.AuditNameValuePair;
 import poc.common.auditing.internal.modelClasses.AuditServiceInstance;
 import poc.common.auditing.internal.modelClasses.DiagnosticAudit;
+import poc.common.auditing.internal.modelClasses.ExceptionAudit;
 
 public class AuditService implements IAuditService {
 
@@ -92,6 +94,21 @@ public class AuditService implements IAuditService {
             List<DiagnosticAudit> results = (List<DiagnosticAudit>) query.execute(auditId);
             for (DiagnosticAudit entry : results) {
                 ret.add(entry.toDiagnosticAuditMap());
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public List<ExceptionAuditMap> GetExceptionAudits(long auditId) {
+        List<ExceptionAuditMap> ret = new ArrayList<>();
+        try (PersistenceManager pm = DatabaseConfiguration.getPersistenceManager()) {
+            Query<ExceptionAudit> query = pm.newQuery(ExceptionAudit.class, "AuditId == auditId");
+            query.parameters("long auditId");
+            query.orderBy("DateTime");
+            List<ExceptionAudit> results = (List<ExceptionAudit>) query.execute(auditId);
+            for (ExceptionAudit entry : results) {
+                ret.add(entry.toExceptionAuditMap());
             }
         }
         return ret;

@@ -14,8 +14,11 @@ import poc.common.auditing.external.dto.AuditServiceInstancesMap;
 import poc.common.auditing.external.dto.AuditServiceInstancesMapBase;
 import poc.common.auditing.external.dto.DiagnosticAuditMap;
 import poc.common.auditing.external.dto.DiagnosticAuditMapBase;
+import poc.common.auditing.external.dto.ExceptionAuditMap;
+import poc.common.auditing.external.dto.ExceptionAuditMapBase;
 import poc.common.auditing.external.enums.AuditType;
 import poc.common.auditing.external.enums.DiagnosticType;
+import poc.common.auditing.external.enums.ExceptionType;
 import poc.common.auditing.external.enums.NameValuePairType;
 import poc.common.auditing.external.exceptions.AuditNotFoundException;
 import poc.common.auditing.external.interfaces.IAuditInstancesService;
@@ -52,12 +55,13 @@ public class AuditInstancesServiceTest {
      */
     @Test
     public void testCreateAuditInstancesService() throws AuditNotFoundException {
-        System.out.println("testCreateAuditInstancesService");
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
 
+        AuditServiceInstancesMapBase base = new AuditServiceInstancesMapBase("ip address", "docker");
+        
         Instant before = Instant.now();
-        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
+        instancesService.StartInstancesAudit(base);
         Instant after = Instant.now();
 
         AuditServiceInstancesMap result = auditService.GetInstancesAudit(instancesService.GetAuditId());       
@@ -67,6 +71,8 @@ public class AuditInstancesServiceTest {
         assertEquals("ip address", result.getIpAddress());
         assertEquals("docker", result.getDockerImage());
         assertEquals(AuditType.ServiceInstance, result.getAuditType());
+        AuditServiceInstancesMap resultCmp = new AuditServiceInstancesMap(instancesService.GetAuditId(), result.getCreateDateTime(), AuditType.ServiceInstance, base.getIpAddress(), base.getDockerImage());
+        assertEquals(resultCmp, result);
 
         try {
             AuditServiceInstancesMap lookup = auditService.GetInstancesAudit(result.getAuditId());
@@ -78,7 +84,6 @@ public class AuditInstancesServiceTest {
 
     @Test
     public void testNameValuePairs() {
-        System.out.println("CreateCompany");
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
         instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
@@ -103,7 +108,6 @@ public class AuditInstancesServiceTest {
 
     @Test
     public void testDiagnosticAudits() {
-        System.out.println("CreateCompany");
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
         instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
@@ -114,6 +118,21 @@ public class AuditInstancesServiceTest {
         instancesService.AuditDiagnostics(new DiagnosticAuditMapBase(DiagnosticType.Authorisation, "test3"));
         
         List<DiagnosticAuditMap> list = auditService.GetDiagnosticAudits(instanceId);
+        assertEquals(3, list.size());
+    }
+    
+        @Test
+    public void testExceptionAudits() {
+        IAuditService auditService = new AuditService();
+        IAuditInstancesService instancesService = auditService.CreateInstancesAudit();
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
+        long instanceId = instancesService.GetAuditId();
+
+        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken, "test1"));
+        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken, "test2"));
+        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken, "test3"));
+        
+        List<ExceptionAuditMap> list = auditService.GetExceptionAudits(instanceId);
         assertEquals(3, list.size());
     }
 }

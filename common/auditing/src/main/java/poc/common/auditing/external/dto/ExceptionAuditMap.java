@@ -16,8 +16,8 @@ public class ExceptionAuditMap extends ExceptionAuditMapBase {
 
     public long getId() {
         return Id;
-    }    
-    
+    }
+
     public Instant getCreateDateTime() {
         return CreateDateTime;
     }

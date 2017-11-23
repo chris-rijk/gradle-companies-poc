@@ -12,6 +12,7 @@ import poc.common.auditing.external.dto.AuditHttpRequestsMapBase;
 import poc.common.auditing.external.dto.AuditHttpResponseMap;
 import poc.common.auditing.external.dto.AuditHttpResponseMapBase;
 import poc.common.auditing.external.dto.AuditServiceInstancesMapBase;
+import poc.common.auditing.external.enums.AuditType;
 import poc.common.auditing.external.enums.HttpRequestSourceType;
 import poc.common.auditing.external.enums.HttpRequestType;
 import poc.common.auditing.external.enums.HttpResponseType;
@@ -58,9 +59,10 @@ public class AuditHttpRequestsServiceTest {
         IAuditHttpRequestsService requestsService = instancesService.CreateHttpRequest();
 
         instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
+        AuditHttpRequestsMapBase reqBase = new AuditHttpRequestsMapBase("url", "body", HttpRequestType.Unknown, HttpRequestSourceType.Test);
 
         Instant before = Instant.now();
-        AuditHttpRequestMap httpRequest = requestsService.StartHttpRequest(new AuditHttpRequestsMapBase("url", "body", HttpRequestType.Unknown, HttpRequestSourceType.Test));
+        AuditHttpRequestMap httpRequest = requestsService.StartHttpRequest(reqBase);
         Instant after = Instant.now();
 
         assertTrue(httpRequest.getAuditId() > 0);
@@ -69,6 +71,8 @@ public class AuditHttpRequestsServiceTest {
         assertEquals("body", httpRequest.getBody());
         assertEquals(HttpRequestType.Unknown, httpRequest.getRequestType());
         assertEquals(HttpRequestSourceType.Test, httpRequest.getRequestSourceType());
+        AuditHttpRequestMap httpRequestCmp = new AuditHttpRequestMap(requestsService.GetAuditId(), httpRequest.getCreateDateTime(), AuditType.HttpRequest, instancesService.GetAuditId(), reqBase.getURL(), reqBase.getBody(), reqBase.getRequestType(), reqBase.getRequestSourceType());
+        assertEquals(httpRequestCmp, httpRequest);
 
         AuditHttpRequestMap lookup;
         try {
@@ -78,13 +82,17 @@ public class AuditHttpRequestsServiceTest {
             assertNotNull(ex);
         }
 
+        AuditHttpResponseMapBase resBase = new AuditHttpResponseMapBase(HttpResponseType.Unknown, 200, "response body");
+        
         before = after;
-        AuditHttpResponseMap httpResponse = requestsService.SetHttpResponse(new AuditHttpResponseMapBase(HttpResponseType.Unknown, 200, "response body"));
+        AuditHttpResponseMap httpResponse = requestsService.SetHttpResponse(resBase);
         after = Instant.now();
         assertTrue(httpResponse.getRequestAuditId() > 0);
         TestUtils.assertInRange(before, httpResponse.getResponseTime(), after);
         assertEquals("response body", httpResponse.getBody());
         assertEquals(200, httpResponse.getStatusCode());
         assertEquals(HttpResponseType.Unknown, httpResponse.getHttpResponseType());
+        AuditHttpResponseMap httpResponseCmp = new AuditHttpResponseMap(requestsService.GetAuditId(), httpResponse.getResponseTime(), resBase.getHttpResponseType(), resBase.getStatusCode(), resBase.getBody());
+        assertEquals(httpResponseCmp, httpResponse);
     }
 }
