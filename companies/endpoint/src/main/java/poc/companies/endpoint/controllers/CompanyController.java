@@ -62,9 +62,13 @@ public class CompanyController implements ICompanyController {
     public void update(long companyId, CompanyBase company) {
         RequestAuditing ra = RequestAuditing.GetFromContext(requestCtx);
         ra.StartHttpRequest(HttpRequestType.CompanyCreate);
+        boolean updated = false;
         try {
-            companyService.UpdateCompany(companyId, company.toMap());
+            updated = companyService.UpdateCompany(companyId, company.toMap());
         } catch (CompanyNotFoundException ex) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        if (!updated) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
