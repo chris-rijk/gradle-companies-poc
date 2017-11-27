@@ -1,11 +1,7 @@
 package poc.common.auditing;
 
 import java.time.Instant;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import poc.common.auditing.external.dto.AuditHttpRequestMap;
 import poc.common.auditing.external.dto.AuditHttpRequestsMapBase;
@@ -26,30 +22,8 @@ import poc.common.auditing.internal.database.AuditService;
  *
  * @author crijk
  */
-public class AuditHttpRequestsServiceTest {
+public class AuditHttpRequestsServiceTest extends TestDbBase {
 
-    public AuditHttpRequestsServiceTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of CreateCompany method, of class CompanyService.
-     */
     @Test
     public void testCreateHttpRequestsService() {
         System.out.println("testCreateHttpRequestsService");
@@ -66,7 +40,7 @@ public class AuditHttpRequestsServiceTest {
         Instant after = Instant.now();
 
         assertTrue(httpRequest.getAuditId() > 0);
-        TestUtils.assertInRange(before, httpRequest.getCreateDateTime(), after);
+        TestDbBase.assertInRange(before, httpRequest.getCreateDateTime(), after);
         assertEquals("url", httpRequest.getURL());
         assertEquals("body", httpRequest.getBody());
         assertEquals(HttpRequestType.Unknown, httpRequest.getRequestType());
@@ -88,7 +62,7 @@ public class AuditHttpRequestsServiceTest {
         AuditHttpResponseMap httpResponse = requestsService.SetHttpResponse(resBase);
         after = Instant.now();
         assertTrue(httpResponse.getRequestAuditId() > 0);
-        TestUtils.assertInRange(before, httpResponse.getResponseTime(), after);
+        assertInRange(before, httpResponse.getResponseTime(), after);
         assertEquals("response body", httpResponse.getBody());
         assertEquals(200, httpResponse.getStatusCode());
         assertEquals(HttpResponseType.Unknown, httpResponse.getHttpResponseType());

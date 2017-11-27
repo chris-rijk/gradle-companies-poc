@@ -4,11 +4,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import poc.common.auditing.external.dto.AuditServiceInstancesMap;
 import poc.common.auditing.external.dto.AuditServiceInstancesMapBase;
@@ -29,30 +25,8 @@ import poc.common.auditing.internal.database.AuditService;
  *
  * @author crijk
  */
-public class AuditInstancesServiceTest {
+public class AuditInstancesServiceTest extends TestDbBase {
 
-    public AuditInstancesServiceTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of CreateCompany method, of class CompanyService.
-     */
     @Test
     public void testCreateAuditInstancesService() throws AuditNotFoundException {
         IAuditService auditService = new AuditService();
@@ -67,7 +41,7 @@ public class AuditInstancesServiceTest {
         AuditServiceInstancesMap result = auditService.GetInstancesAudit(instancesService.GetAuditId());       
         
         assertTrue(result.getAuditId() > 0);
-        TestUtils.assertInRange(before, result.getCreateDateTime(), after);
+        assertInRange(before, result.getCreateDateTime(), after);
         assertEquals("ip address", result.getIpAddress());
         assertEquals("docker", result.getDockerImage());
         assertEquals(AuditType.ServiceInstance, result.getAuditType());
@@ -121,7 +95,7 @@ public class AuditInstancesServiceTest {
         assertEquals(3, list.size());
     }
     
-        @Test
+    @Test
     public void testExceptionAudits() {
         IAuditService auditService = new AuditService();
         IAuditInstancesService instancesService = auditService.CreateInstancesAudit();

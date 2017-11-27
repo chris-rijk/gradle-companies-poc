@@ -2,11 +2,7 @@ package poc.companies.database;
 
 import java.time.Instant;
 import java.util.UUID;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import poc.companies.common.dto.CompanyMap;
 import poc.companies.common.dto.CompanyMapBase;
@@ -20,33 +16,10 @@ import poc.companies.database.internal.database.CompanyService;
  *
  * @author crijk
  */
-public class CompanyServiceTest {
+public class CompanyServiceTest extends TestDbBase {
 
-    public CompanyServiceTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of CreateCompany method, of class CompanyService.
-     */
     @Test
     public void testCreateCompany() {
-        System.out.println("CreateCompany");
         CompanyService instance = new CompanyService();
         CompanyMapBase company = new CompanyMapBase("Company name", CompanyStatusType.Enabled, "platform");
 
@@ -58,7 +31,7 @@ public class CompanyServiceTest {
         assertEquals(company.getStatusType(), result.getStatusType());
         assertEquals(company.getName(), result.getName());
         assertEquals(company.getPlatform(), result.getPlatform());
-        TestUtils.assertInRange(before, result.getCreateDateTime(), after);
+        assertInRange(before, result.getCreateDateTime(), after);
 
         try {
             CompanyMap lookup = instance.GetCompany(result.getId());
@@ -97,7 +70,6 @@ public class CompanyServiceTest {
      */
     @Test
     public void testGetCompany_NotFound_ReturnsNull() {
-        System.out.println("GetCompany");
         CompanyService instance = new CompanyService();
         try {
             CompanyMap result = instance.GetCompany(Long.MAX_VALUE);
@@ -110,7 +82,6 @@ public class CompanyServiceTest {
 
     @Test
     public void testSearchCompanies_UnknownName_ReturnsEmpty() {
-        System.out.println("GetCompany");
         CompanyService instance = new CompanyService();
         PagedListMap<CompanyMap> result = instance.SearchCompanies(new CompanySearchMap("!!name!!", null, null, null, null));
         assertNotNull(result);
