@@ -9,6 +9,7 @@ import poc.common.jersey.lifecycle.SystemConfiguration;
 import poc.companies.database.external.interfaces.ICompanyService;
 import poc.companies.endpoint.controllers.CompanyController;
 import poc.companies.endpoint.controllers.ICompanyController;
+import poc.companies.endpoint.filters.ExceptionMappingErrorResponse;
 import poc.companies.endpoint.security.SecurityFilterCompanyRead;
 import poc.companies.endpoint.security.SecurityFilterCompanyWrite;
 
@@ -28,13 +29,18 @@ public class AppConfig extends JerseyConfig {
         
         RegisterJWTSecurityFilter();
         RegisterMyServices();
+        RegisterCustomExceptionFilter();
     }
 
-    protected void RegisterJWTSecurityFilter() {
+    private void RegisterJWTSecurityFilter() {
         register(SecurityFilterCompanyRead.class);
         register(SecurityFilterCompanyWrite.class);
     }
 
+    private void RegisterCustomExceptionFilter() {
+        register(ExceptionMappingErrorResponse.class);
+    }
+    
     private void ConfigureSwagger() {
         String resources = CompanyController.class.getPackage().getName();
         BeanConfig beanConfig = new BeanConfig();

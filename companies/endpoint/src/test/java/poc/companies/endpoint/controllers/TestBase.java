@@ -1,8 +1,12 @@
 package poc.companies.endpoint.controllers;
 
 import java.time.Instant;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -44,5 +48,27 @@ public abstract class TestBase extends JerseyTest {
         AppConfig config = new AppConfig(auditServiceMock, companyServiceMock);
         config.Setup(new SystemConfiguration());
         return config;
+    }
+
+    protected Invocation.Builder auth(Invocation.Builder request, String token) {
+        if (token != null) {
+            request = request.header("Authorization", "Bearer " + token);
+        }
+        return request;
+    }
+
+    protected void verifyNotFound(long id, Response response) {
+        assertEquals(404, response.getStatus());
+        assertTrue(response.hasEntity());
+        String body = response.readEntity(String.class);
+        String ex = "{\r\n"
+                + "  \"errorCode\" : 1000,\r\n"
+                + "  \"errorToken\" : \"CompanyNotFound\",\r\n"
+                + "  \"description\" : \"The specified company-id does not exist\",\r\n"
+                + "  \"errorParameters\" : {\r\n"
+                + "    \"CompanyId\" : \"" + id + "\"\r\n"
+                + "  }\r\n"
+                + "}";
+        assertEquals(ex, body);
     }
 }

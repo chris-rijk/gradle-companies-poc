@@ -7,6 +7,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.doReturn;
@@ -25,6 +26,7 @@ public class CreateCompanyTest extends TestBase {
     public void testCompanyCreateMissingAuth() {
         Response response = post(null);
         assertEquals(401, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -32,6 +34,7 @@ public class CreateCompanyTest extends TestBase {
     public void testCompanyCreateAuthWrongKey() {
         Response response = post(JwtTokens.INVALID_WRONG_KEY);
         assertEquals(401, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -39,6 +42,7 @@ public class CreateCompanyTest extends TestBase {
     public void testCompanyCreateAuthNoPermissions() {
         Response response = post(JwtTokens.VALID_READ_TOKEN);
         assertEquals(403, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -75,13 +79,6 @@ public class CreateCompanyTest extends TestBase {
                 .request()
                 .accept(MediaType.APPLICATION_JSON);
         return auth(request, token).post(Entity.entity(body, MediaType.APPLICATION_JSON));
-    }
-
-    private Invocation.Builder auth(Invocation.Builder request, String token) {
-        if (token != null) {
-            request = request.header("Authorization", "Bearer " + token);
-        }
-        return request;
     }
 
     private void verify() {

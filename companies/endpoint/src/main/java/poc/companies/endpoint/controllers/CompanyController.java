@@ -13,6 +13,7 @@ import poc.companies.common.dto.CompanySearchMap;
 import poc.companies.common.dto.PagedListMap;
 import poc.companies.common.exceptions.CompanyNotFoundException;
 import poc.companies.database.external.interfaces.ICompanyService;
+import poc.companies.endpoint.exceptions.CompanyNotFoundResponse;
 import poc.companies.endpoint.json.Company;
 import poc.companies.endpoint.json.CompanyBase;
 import poc.companies.endpoint.json.PagedCompanies;
@@ -37,10 +38,10 @@ public class CompanyController implements ICompanyController {
         try {
             c = companyService.GetCompany(companyId);
         } catch (CompanyNotFoundException ex) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            throw new CompanyNotFoundResponse(companyId);
         }
         if (c == null) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            throw new CompanyNotFoundResponse(companyId);
         }
         
         Company response = new Company(c);
@@ -66,10 +67,10 @@ public class CompanyController implements ICompanyController {
         try {
             updated = companyService.UpdateCompany(companyId, company.toMap());
         } catch (CompanyNotFoundException ex) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            throw new CompanyNotFoundResponse(companyId);
         }
         if (!updated) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            throw new CompanyNotFoundResponse(companyId);
         }
 
         ra.markResponse(Status.NO_CONTENT, HttpResponseType.Success);

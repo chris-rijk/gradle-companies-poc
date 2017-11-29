@@ -6,6 +6,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mockito;
@@ -25,6 +26,7 @@ public class UpdateCompanyTest extends TestBase {
     public void testCompanyUpdateMissingAuth() {
         Response response = put(1, null);
         assertEquals(401, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -32,6 +34,7 @@ public class UpdateCompanyTest extends TestBase {
     public void testCompanyUpdateAuthWrongKey() {
         Response response = put(1, JwtTokens.INVALID_WRONG_KEY);
         assertEquals(401, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -39,6 +42,7 @@ public class UpdateCompanyTest extends TestBase {
     public void testCompanyUpdateAuthNoPermissions() {
         Response response = put(1, JwtTokens.VALID_READ_TOKEN);
         assertEquals(403, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -47,7 +51,8 @@ public class UpdateCompanyTest extends TestBase {
         doReturn(true).when(companyServiceMock).UpdateCompany(eq(1L), Mockito.any());
 
         Response response = put(1, JwtTokens.VALID_WRITE_TOKEN);
-        assertEquals(204, response.getStatus());       
+        assertEquals(204, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -56,8 +61,9 @@ public class UpdateCompanyTest extends TestBase {
         doThrow(CompanyNotFoundException.class).when(companyServiceMock).UpdateCompany(eq(1L), Mockito.any());
 
         Response response = put(1, JwtTokens.VALID_WRITE_TOKEN);
-        assertEquals(404, response.getStatus());       
+        assertEquals(404, response.getStatus());
         verify();
+        verifyNotFound(1, response);
     }
 
     private Response put(long id, String token) {
@@ -74,13 +80,6 @@ public class UpdateCompanyTest extends TestBase {
                 .request()
                 .accept(MediaType.APPLICATION_JSON);
         return auth(request, token).put(Entity.entity(body, MediaType.APPLICATION_JSON));
-    }
-
-    private Invocation.Builder auth(Invocation.Builder request, String token) {
-        if (token != null) {
-            request = request.header("Authorization", "Bearer " + token);
-        }
-        return request;
     }
 
     private void verify() {

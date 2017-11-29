@@ -4,6 +4,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -17,6 +19,7 @@ public class GetCompanyTest extends TestBase {
     public void testCompanyGetMissingAuth() {
         Response response = get(1, null);
         assertEquals(401, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
@@ -24,34 +27,37 @@ public class GetCompanyTest extends TestBase {
     public void testCompanyGetAuthWrongKey() {
         Response response = get(1, JwtTokens.INVALID_WRONG_KEY);
         assertEquals(401, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
-    
-        @Test
+
+    @Test
     public void testCompanyGetAuthNoPermissions() {
         Response response = get(1, JwtTokens.VALID_WRITE_TOKEN);
         assertEquals(403, response.getStatus());
+        assertFalse(response.hasEntity());
         verify();
     }
 
     @Test
     public void testCompanyGetUnknownCompany1() {
         Response response = get(1, JwtTokens.VALID_READ_TOKEN);
-        assertEquals(404, response.getStatus());
         verify();
+        verifyNotFound(1, response);
     }
 
     @Test
     public void testCompanyGetUnknownCompany2() {
         Response response = get(2, JwtTokens.VALID_READ_TOKEN);
-        assertEquals(404, response.getStatus());
         verify();
+        verifyNotFound(2, response);
     }
 
     @Test
     public void testCompanyGetKnownCompany3() {
         Response response = get(3, JwtTokens.VALID_READ_TOKEN);
         assertEquals(200, response.getStatus());
+        assertTrue(response.hasEntity());
         String body = response.readEntity(String.class);
 
         String ex = "{\r\n"
@@ -71,13 +77,6 @@ public class GetCompanyTest extends TestBase {
                 .request()
                 .accept(MediaType.APPLICATION_JSON);
         return auth(request, token).get();
-    }
-
-    private Invocation.Builder auth(Invocation.Builder request, String token) {
-        if (token != null) {
-            request = request.header("Authorization", "Bearer " + token);
-        }
-        return request;
     }
 
     private void verify() {
