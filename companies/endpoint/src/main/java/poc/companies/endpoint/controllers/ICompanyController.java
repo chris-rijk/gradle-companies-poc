@@ -1,11 +1,17 @@
 package poc.companies.endpoint.controllers;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiKeyAuthDefinition;
+import io.swagger.annotations.ApiKeyAuthDefinition.ApiKeyLocation;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.AuthorizationScope;
+import io.swagger.annotations.SecurityDefinition;
 import io.swagger.annotations.ResponseHeader;
+import io.swagger.annotations.SwaggerDefinition;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import poc.companies.endpoint.json.Company;
@@ -19,6 +25,9 @@ import poc.companies.endpoint.security.SecuredCompanyWrite;
  * @author crijk
  */
 @Api(value = "Service for Companies and Clients")
+@SwaggerDefinition(securityDefinition = @SecurityDefinition(apiKeyAuthDefinitions = {
+    @ApiKeyAuthDefinition(key = "JWT", in = ApiKeyLocation.HEADER, name = "Authorization")
+}))
 @Path("/companies")
 @Produces(MediaType.APPLICATION_JSON)
 public interface ICompanyController {
@@ -26,7 +35,9 @@ public interface ICompanyController {
     @GET
     @Path("{companyId}")
     @SecuredCompanyRead
-    @ApiOperation(value = "Returns company details", notes = "Returns the specified company, if it exists")
+    @ApiOperation(value = "Returns company details", notes = "Returns the specified company, if it exists", authorizations = {
+        @Authorization(value = "JWT")
+    })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successful retrieval of company detail", response = Company.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -41,7 +52,9 @@ public interface ICompanyController {
     @POST
     @Path("")
     @SecuredCompanyWrite
-    @ApiOperation(value = "Creates a new company", notes = "Creates the specified company and returns the new instance")
+    @ApiOperation(value = "Creates a new company", notes = "Creates the specified company and returns the new instance", authorizations = {
+        @Authorization(value = "JWT")
+    })
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Successfully created company", responseHeaders = {
             @ResponseHeader(name = "Location", description = "URL to fetch the newly created company")
@@ -57,7 +70,9 @@ public interface ICompanyController {
     @PUT
     @Path("{companyId}")
     @SecuredCompanyWrite
-    @ApiOperation(value = "Updates an existing company", notes = "Updates the specified company and returns the new values")
+    @ApiOperation(value = "Updates an existing company", notes = "Updates the specified company and returns the new values", authorizations = {
+        @Authorization(value = "JWT")
+    })
     @ApiResponses(value = {
         @ApiResponse(code = 204, message = "Successfully updated company"),
         @ApiResponse(code = 400, message = "Provided company details are invalid"),
@@ -73,7 +88,9 @@ public interface ICompanyController {
     @GET
     @Path("")
     @SecuredCompanyRead
-    @ApiOperation(value = "Returns a list of company details", notes = "Returns 0 or more companies, with pagination")
+    @ApiOperation(value = "Returns a list of company details", notes = "Returns 0 or more companies, with pagination", authorizations = {
+        @Authorization(value = "JWT")
+    })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "0 or more companies returned", response = PagedCompanies.class),
         @ApiResponse(code = 400, message = "Provided search details are invalid"),
