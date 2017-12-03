@@ -1,4 +1,4 @@
-package poc.common.jersey.lifecycle;
+package poc.common.jersey.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,28 +7,28 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 public class JsonSerialisation {
-    private static final ObjectMapper mapper;
-    private static final JacksonJaxbJsonProvider provider;
+    private static final ObjectMapper MAPPER;
+    private static final JacksonJaxbJsonProvider PROVIDER;
     
     static {
-        mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        MAPPER = new ObjectMapper();
+        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         JavaTimeModule module = new JavaTimeModule();
-        mapper.registerModule(module);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        provider = new JacksonJaxbJsonProvider();
-        provider.setMapper(mapper);
+        MAPPER.registerModule(module);
+        MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        PROVIDER = new JacksonJaxbJsonProvider();
+        PROVIDER.setMapper(MAPPER);
     }
     
     public static JacksonJaxbJsonProvider getProvider() {
-        return provider;
+        return PROVIDER;
     }
     
     public static String toString(Object obj) throws JsonProcessingException {
-        return mapper.writeValueAsString(obj);
+        return MAPPER.writeValueAsString(obj);
     }
 
     public static String toPrettyString(Object obj) throws JsonProcessingException {
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }
 }

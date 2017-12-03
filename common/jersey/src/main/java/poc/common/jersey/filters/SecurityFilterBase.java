@@ -7,13 +7,17 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import poc.common.auditing.external.enums.DiagnosticType;
 import poc.common.auditing.external.enums.ExceptionType;
+import poc.common.jersey.errors.InvalidAuthorizationHeaderException;
+import poc.common.jersey.errors.UnparsableAuthorizationHeaderException;
+import poc.common.jersey.errors.NoAuthenticationHeaderException;
+import poc.common.jersey.errors.NoBearerAuthorizationHeaderException;
 import poc.common.jersey.lifecycle.RequestAuditing;
 import poc.common.jersey.security.Authorizer;
 import poc.common.jersey.security.TokenUtil;
 
 public abstract class SecurityFilterBase implements ContainerRequestFilter {
 
-    private static final String AUTHENTICATION_SCHEME = "Bearer";
+    public static final String AUTHENTICATION_SCHEME = "Bearer";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -23,13 +27,7 @@ public abstract class SecurityFilterBase implements ContainerRequestFilter {
         ra.AuditDiagnostics(DiagnosticType.Authorisation, "Starting auth header processing on '" + authHeader + "'");
 
         TokenUtil tu = getTokenUtil(ra, authHeader);
-        if (tu == null) {
-            ra.AuditDiagnostics(DiagnosticType.Authorisation, "No or invalid authentication");
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED)
-                            .header(HttpHeaders.WWW_AUTHENTICATE, AUTHENTICATION_SCHEME)
-                            .build());
-        } else if (isAuthorised(ra, tu)) {
+        if (isAuthorised(ra, tu)) {
             requestContext.setSecurityContext(new Authorizer("", tu.getExpiration(), true));
             ra.AuditDiagnostics(DiagnosticType.Authorisation, "Request authorised");
         } else {
@@ -45,11 +43,11 @@ public abstract class SecurityFilterBase implements ContainerRequestFilter {
     private TokenUtil getTokenUtil(RequestAuditing ra, String authorizationHeader) {
         if (authorizationHeader == null) {
             ra.AuditDiagnostics(DiagnosticType.Authorisation, "No authorization header");
-            return null;
+            throw new NoAuthenticationHeaderException();
         }
         if (!authorizationHeader.startsWith(AUTHENTICATION_SCHEME)) {
             ra.AuditDiagnostics(DiagnosticType.Authorisation, "Authorization does not start with 'Bearer '");
-            return null;
+            throw new NoBearerAuthorizationHeaderException(authorizationHeader);
         }
 
         String strToken = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
@@ -58,16 +56,17 @@ public abstract class SecurityFilterBase implements ContainerRequestFilter {
             tu = new TokenUtil(strToken);
         } catch (Exception e) {
             ra.AuditException(ExceptionType.Authorization_FailedToParseToken, e);
-            return null;
+            throw new UnparsableAuthorizationHeaderException(strToken);
         }
 
         if (!tu.isValid()) {
             ra.AuditDiagnostics(DiagnosticType.Authorisation, "Invalid token");
-            return null;
+            throw new UnparsableAuthorizationHeaderException(strToken);
         }
+        
         if (!tu.isContentValid()) {
             ra.AuditDiagnostics(DiagnosticType.Authorisation, "Invalid token content");
-            return null;
+            throw new InvalidAuthorizationHeaderException(strToken);
         }
 
         return tu;

@@ -1,9 +1,9 @@
 package poc.companies.endpoint.exceptions;
 
-public class CompanyNotFoundResponse extends ErrorResponseBase {
+public class CompanyNotFoundResponse extends CompanyErrorResponseBase {
     
     public CompanyNotFoundResponse(long companyId) {
-        super(ErrorCode.CompanyNotFound);
+        super(CompanyErrorCode.CompanyNotFound);
         setCompanyId(companyId);        
     }
 }

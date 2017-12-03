@@ -18,17 +18,15 @@ public class GetCompanyTest extends TestBase {
     @Test
     public void testCompanyGetMissingAuth() {
         Response response = get(1, null);
-        assertEquals(401, response.getStatus());
-        assertFalse(response.hasEntity());
         verify();
+        verifyNoAuthorizationHeader(response);
     }
 
     @Test
     public void testCompanyGetAuthWrongKey() {
-        Response response = get(1, JwtTokens.INVALID_WRONG_KEY);
-        assertEquals(401, response.getStatus());
-        assertFalse(response.hasEntity());
+        Response response = get(1, "X");
         verify();
+        verifyUnparsableAuthorizationHeader(response);
     }
 
     @Test

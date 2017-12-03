@@ -1,6 +1,5 @@
-package poc.companies.endpoint.json;
+package poc.common.jersey.json;
 
-import poc.companies.endpoint.exceptions.CompanyErrorResponseBase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.HashMap;
@@ -20,11 +19,11 @@ public class ErrorResponse {
     private ErrorResponse() {
     }
 
-    public ErrorResponse(CompanyErrorResponseBase error) {
-        this.errorCode = error.getErrorCode();
-        this.errorToken = error.getErrorToken();
-        this.description = error.getDescription();
-        this.errorParameters = error.getKeys();
+    public ErrorResponse(int errorCode, String errorToken, String description, HashMap<String, String> keys) {
+        this.errorCode = errorCode;
+        this.errorToken = errorToken;
+        this.description = description;
+        this.errorParameters = keys;
     }
 
     public int getErrorCode() {

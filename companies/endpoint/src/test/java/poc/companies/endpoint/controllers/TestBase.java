@@ -13,6 +13,7 @@ import static org.mockito.Mockito.mock;
 import poc.common.auditing.external.interfaces.IAuditHttpRequestsService;
 import poc.common.auditing.external.interfaces.IAuditInstancesService;
 import poc.common.auditing.external.interfaces.IAuditService;
+import poc.common.jersey.errors.CommonErrorCode;
 import poc.common.jersey.lifecycle.SystemConfiguration;
 import poc.companies.common.dto.CompanyMap;
 import poc.companies.common.exceptions.CompanyNotFoundException;
@@ -67,6 +68,34 @@ public abstract class TestBase extends JerseyTest {
                 + "  \"description\" : \"The specified company-id does not exist\",\r\n"
                 + "  \"errorParameters\" : {\r\n"
                 + "    \"CompanyId\" : \"" + id + "\"\r\n"
+                + "  }\r\n"
+                + "}";
+        assertEquals(ex, body);
+    }
+
+    protected void verifyNoAuthorizationHeader(Response response) {
+        assertEquals(401, response.getStatus());
+        assertTrue(response.hasEntity());
+        String body = response.readEntity(String.class);
+        String ex = "{\r\n"
+                + "  \"errorCode\" : "+CommonErrorCode.NoAuthorizationHeader.getErrorCode()+",\r\n"
+                + "  \"errorToken\" : \""+CommonErrorCode.NoAuthorizationHeader.getErrorToken()+"\",\r\n"
+                + "  \"description\" : \""+CommonErrorCode.NoAuthorizationHeader.getDescription()+"\",\r\n"
+                + "  \"errorParameters\" : { }\r\n"
+                + "}";
+        assertEquals(ex, body);
+    }
+
+    protected void verifyUnparsableAuthorizationHeader(Response response) {
+        assertEquals(401, response.getStatus());
+        assertTrue(response.hasEntity());
+        String body = response.readEntity(String.class);
+        String ex = "{\r\n"
+                + "  \"errorCode\" : "+CommonErrorCode.UnparsableAuthorizationHeader.getErrorCode()+",\r\n"
+                + "  \"errorToken\" : \""+CommonErrorCode.UnparsableAuthorizationHeader.getErrorToken()+"\",\r\n"
+                + "  \"description\" : \""+CommonErrorCode.UnparsableAuthorizationHeader.getDescription()+"\",\r\n"
+                + "  \"errorParameters\" : {\r\n"
+                + "    \"JWT-Token\" : \"X\"\r\n"
                 + "  }\r\n"
                 + "}";
         assertEquals(ex, body);

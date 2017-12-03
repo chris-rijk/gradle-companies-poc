@@ -102,9 +102,9 @@ public class AuditInstancesServiceTest extends TestDbBase {
         instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase("ip address", "docker"));
         long instanceId = instancesService.GetAuditId();
 
-        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken, "test1"));
-        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken, "test2"));
-        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken, "test3"));
+        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken.getValue(), "test1"));
+        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken.getValue(), "test2"));
+        instancesService.AuditException(new ExceptionAuditMapBase(ExceptionType.Authorization_FailedToParseToken.getValue(), "test3"));
         
         List<ExceptionAuditMap> list = auditService.GetExceptionAudits(instanceId);
         assertEquals(3, list.size());

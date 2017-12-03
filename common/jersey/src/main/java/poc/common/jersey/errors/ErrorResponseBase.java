@@ -1,15 +1,16 @@
-package poc.companies.endpoint.exceptions;
+package poc.common.jersey.errors;
 
 import java.util.HashMap;
+import poc.common.jersey.json.ErrorResponse;
 
-public class ErrorResponseBase extends RuntimeException {
+abstract public class ErrorResponseBase extends RuntimeException {
 
     private final int errorCode, httpErrorCode;
     private final String errorToken;
     private final String description;
     protected final HashMap<String, String> keys;
 
-    public ErrorResponseBase(int httpErrorCode, ErrorCode error) {
+    public ErrorResponseBase(int httpErrorCode, IErrorCode error) {
         this.errorCode = error.getErrorCode();
         this.httpErrorCode = httpErrorCode;
         this.errorToken = error.getErrorToken();
@@ -17,7 +18,7 @@ public class ErrorResponseBase extends RuntimeException {
         this.keys = new HashMap<>();
     }
 
-    public ErrorResponseBase(ErrorCode error) {
+    public ErrorResponseBase(IErrorCode error) {
         this(error.getHttpErrorCode(), error);
     }
 
@@ -40,8 +41,16 @@ public class ErrorResponseBase extends RuntimeException {
     public HashMap<String, String> getKeys() {
         return keys;
     }
-
-    protected final void setCompanyId(long companyId) {
-        keys.put("CompanyId", Long.toString(companyId));
+    
+    protected final void setAuthorizationHeader(String header) {
+        keys.put("AuthorizationHeader", header);
+    }
+    
+    protected final void setJWTToken(String token) {
+        keys.put("JWT-Token", token);
+    }
+    
+    public ErrorResponse toJsonErrorResponse() {
+        return new ErrorResponse(errorCode, errorToken, description, keys);
     }
 }

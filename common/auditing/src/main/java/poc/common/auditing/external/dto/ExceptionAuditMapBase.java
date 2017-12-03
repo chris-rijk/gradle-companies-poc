@@ -1,17 +1,15 @@
 package poc.common.auditing.external.dto;
 
-import poc.common.auditing.external.enums.ExceptionType;
-
 public class ExceptionAuditMapBase {
-    private final ExceptionType ExceptionType;
+    private final int ExceptionType;
     private final String Message;
 
-    public ExceptionAuditMapBase(ExceptionType ExceptionType, String Message) {
-        this.ExceptionType = ExceptionType;
+    public ExceptionAuditMapBase(int exceptionType, String Message) {
+        this.ExceptionType = exceptionType;
         this.Message = Message;
     }
 
-    public ExceptionType getExceptionType() {
+    public int getExceptionType() {
         return ExceptionType;
     }
 

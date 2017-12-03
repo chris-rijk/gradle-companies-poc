@@ -1,5 +1,6 @@
 package poc.common.jersey.lifecycle;
 
+import poc.common.jersey.json.JsonSerialisation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -125,6 +126,6 @@ public class RequestAuditing {
         StringWriter errors = new StringWriter();
         t.printStackTrace(new PrintWriter(errors));
         String stackTrace = errors.toString();
-        requestService.AuditException(new ExceptionAuditMapBase(type, stackTrace));
+        requestService.AuditException(new ExceptionAuditMapBase(type.getValue(), stackTrace));
     }
 }

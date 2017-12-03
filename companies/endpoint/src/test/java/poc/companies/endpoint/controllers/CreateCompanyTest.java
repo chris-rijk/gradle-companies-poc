@@ -11,7 +11,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.doReturn;
-import poc.common.jersey.lifecycle.JsonSerialisation;
+import poc.common.jersey.json.JsonSerialisation;
 import poc.companies.common.dto.CompanyMap;
 import poc.companies.common.enums.CompanyStatusType;
 import poc.companies.endpoint.json.CompanyBase;
@@ -25,17 +25,15 @@ public class CreateCompanyTest extends TestBase {
     @Test
     public void testCompanyCreateMissingAuth() {
         Response response = post(null);
-        assertEquals(401, response.getStatus());
-        assertFalse(response.hasEntity());
         verify();
+        verifyNoAuthorizationHeader(response);
     }
 
     @Test
     public void testCompanyCreateAuthWrongKey() {
-        Response response = post(JwtTokens.INVALID_WRONG_KEY);
-        assertEquals(401, response.getStatus());
-        assertFalse(response.hasEntity());
+        Response response = post("X");
         verify();
+        verifyUnparsableAuthorizationHeader(response);
     }
 
     @Test

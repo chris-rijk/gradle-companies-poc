@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import poc.common.jersey.lifecycle.JsonSerialisation;
-import poc.companies.endpoint.exceptions.ErrorResponseBase;
+import poc.common.jersey.json.JsonSerialisation;
+import poc.companies.endpoint.exceptions.CompanyErrorResponseBase;
 import poc.companies.endpoint.json.ErrorResponse;
 
-public class ExceptionMappingErrorResponse implements ExceptionMapper<ErrorResponseBase> {
+public class ExceptionMappingErrorResponse implements ExceptionMapper<CompanyErrorResponseBase> {
 
     @Override
-    public Response toResponse(ErrorResponseBase e) {
+    public Response toResponse(CompanyErrorResponseBase e) {
         ErrorResponse er = new ErrorResponse(e);
         try {
             return Response

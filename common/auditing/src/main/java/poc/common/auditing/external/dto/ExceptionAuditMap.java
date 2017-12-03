@@ -1,15 +1,14 @@
 package poc.common.auditing.external.dto;
 
 import java.time.Instant;
-import poc.common.auditing.external.enums.ExceptionType;
 
 public class ExceptionAuditMap extends ExceptionAuditMapBase {
 
     private final long Id;
     private final Instant CreateDateTime;
 
-    public ExceptionAuditMap(long id, Instant createDateTime, ExceptionType ExceptionType, String Message) {
-        super(ExceptionType, Message);
+    public ExceptionAuditMap(long id, Instant createDateTime, int exceptionType, String message) {
+        super(exceptionType, message);
         this.Id = id;
         this.CreateDateTime = createDateTime;
     }

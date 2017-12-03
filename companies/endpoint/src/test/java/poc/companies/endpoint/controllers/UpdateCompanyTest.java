@@ -12,7 +12,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
-import poc.common.jersey.lifecycle.JsonSerialisation;
+import poc.common.jersey.json.JsonSerialisation;
 import poc.companies.common.exceptions.CompanyNotFoundException;
 import poc.companies.endpoint.json.CompanyBase;
 
@@ -25,17 +25,15 @@ public class UpdateCompanyTest extends TestBase {
     @Test
     public void testCompanyUpdateMissingAuth() {
         Response response = put(1, null);
-        assertEquals(401, response.getStatus());
-        assertFalse(response.hasEntity());
         verify();
+        verifyNoAuthorizationHeader(response);
     }
 
     @Test
     public void testCompanyUpdateAuthWrongKey() {
-        Response response = put(1, JwtTokens.INVALID_WRONG_KEY);
-        assertEquals(401, response.getStatus());
-        assertFalse(response.hasEntity());
+        Response response = put(1, "X");
         verify();
+        verifyUnparsableAuthorizationHeader(response);
     }
 
     @Test

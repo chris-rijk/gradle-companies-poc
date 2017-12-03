@@ -1,5 +1,6 @@
 package poc.common.jersey.lifecycle;
 
+import poc.common.jersey.json.JsonSerialisation;
 import java.time.Instant;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
