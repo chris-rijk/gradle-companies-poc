@@ -6,6 +6,7 @@ include 'companies-common'
 include 'companies-database'
 include 'companies-endpoint'
 include 'companies-runtime-dev'
+include 'companies-runtime-prod'
 
 rootProject.children.each {project ->
     String fileBaseName = project.name.replaceAll("-") { "/" }

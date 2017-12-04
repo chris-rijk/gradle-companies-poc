@@ -1,0 +1,23 @@
+dependencies {
+    compile project(':companies-endpoint')
+}
+
+apply plugin: 'application'
+mainClassName = 'poc.companies.runtime.Bootstrap'
+
+jar {
+    manifest {
+        attributes(
+            "Manifest-Version": "1.0",
+            'Main-Class': 'poc.companies.runtime.Bootstrap',
+            "Class-Path": configurations.runtime.collect { it.getName() }.join(' ')
+        )
+    }
+}
+
+task copyDeps(type: Copy) {
+    from configurations.runtime
+    into 'build/libs'
+}
+
+jar.dependsOn copyDeps

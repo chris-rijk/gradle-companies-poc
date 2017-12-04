@@ -11,3 +11,4 @@
 /common/auditing/build/
 /common/jersey/build/
 /companies/database/build/
+/companies/runtime/prod/build/

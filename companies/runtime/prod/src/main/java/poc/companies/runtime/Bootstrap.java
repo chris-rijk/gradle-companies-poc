@@ -10,12 +10,6 @@ import poc.companies.endpoint.lifecycle.AppConfig;
 public class Bootstrap {
 
     public static void main(String[] args) throws IOException {
-        
-        java.util.Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n", envName, env.get(envName));
-        }
-        
         AppConfig app = new AppConfig(new AuditService(), new CompanyService());
         SystemConfiguration config = new SystemConfiguration();
         app.Setup(config);
