@@ -10,6 +10,9 @@ import poc.companies.endpoint.lifecycle.AppConfig;
 public class Bootstrap {
 
     public static void main(String[] args) throws IOException {
+        System.setProperty("DB_AUDITING_URL", "jdbc:sqlserver://prod_db.domain;DatabaseName=CompaniesService;SelectMethod=cursor");
+        System.setProperty("DB_COMPANIES_URL", "jdbc:sqlserver://prod_db.domain;DatabaseName=CompaniesService;SelectMethod=cursor");
+
         AppConfig app = new AppConfig(new AuditService(), new CompanyService());
         SystemConfiguration config = new SystemConfiguration();
         app.Setup(config);
