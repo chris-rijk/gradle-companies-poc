@@ -1,3 +1,7 @@
+# Example build:
+# docker build -f Dockerfile.dev --build-arg VERSION=v1.0.101 -t companies-runtime-dev .
+# Example run:
+# docker run --publish 18080:18080 companies-runtime-dev
 FROM gradle:4.3.0-jdk8 AS BUILD_IMAGE
 WORKDIR /home/gradle/project
 
