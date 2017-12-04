@@ -14,19 +14,20 @@ import poc.companies.endpoint.security.SecurityFilterCompanyRead;
 import poc.companies.endpoint.security.SecurityFilterCompanyWrite;
 
 public class AppConfig extends JerseyConfig {
+
     private final ICompanyService companyService;
 
     public AppConfig(IAuditService auditService, ICompanyService companyService) {
         super(auditService);
         this.companyService = companyService;
     }
-    
+
     public void Setup(SystemConfiguration system) {
         StartAuditing(system);
         RegisterDefault();
 
-        ConfigureSwagger();
-        
+        ConfigureSwagger(system);
+
         RegisterJWTSecurityFilter();
         RegisterMyServices();
         RegisterCustomExceptionFilter();
@@ -40,13 +41,17 @@ public class AppConfig extends JerseyConfig {
     private void RegisterCustomExceptionFilter() {
         register(ExceptionMappingErrorResponse.class);
     }
-    
-    private void ConfigureSwagger() {
+
+    private void ConfigureSwagger(SystemConfiguration system) {
         String resources = CompanyController.class.getPackage().getName();
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("localhost");
+        String host = "localhost";
+        if (system.getPort() != null && !"80".equals(system.getPort())) {
+            host += ":" + system.getPort();
+        }
+        beanConfig.setHost(host);
         beanConfig.setBasePath("/");
         beanConfig.setResourcePackage(resources);
         beanConfig.setPrettyPrint(true);
