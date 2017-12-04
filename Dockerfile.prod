@@ -10,6 +10,8 @@ WORKDIR /home/gradle/project/gradle-companies-poc
 RUN gradle --no-daemon --info --stacktrace :companies-runtime-prod:jar
 
 FROM openjdk:8-jre-alpine
+ARG VERSION
+ENV VERSION ${VERSION}
 WORKDIR /root/
 COPY --from=BUILD_IMAGE /home/gradle/project/gradle-companies-poc/companies/runtime/prod/build/libs/*.jar ./
 EXPOSE 18080

@@ -25,10 +25,8 @@ public class JerseyConfig extends ResourceConfig {
     
     protected void StartAuditing(SystemConfiguration system) {
         instancesService = auditService.CreateInstancesAudit();
-        String url = system.getBindURI().toString();
-        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase(url, "docker"));
-
-        AuditDiagnostics(DiagnosticType.Startup, "Starting instance " + instancesService.GetAuditId() + " on " + url);
+        instancesService.StartInstancesAudit(new AuditServiceInstancesMapBase(system.getHostname(), system.getVersion()));
+        AuditDiagnostics(DiagnosticType.Startup, "Starting instance " + instancesService.GetAuditId() + " on " + system.getBindURI());
     }
     
     final protected void RegisterDefault() {

@@ -6,6 +6,10 @@ import javax.ws.rs.core.UriBuilder;
 
 public class SystemConfiguration {
 
+    public String getVersion() {
+        return Optional.ofNullable(System.getenv("VERSION")).orElse("no-version");
+    }
+
     public String getHostname() {
         return Optional.ofNullable(System.getenv("HOSTNAME")).orElse("localhost");
     }
